@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player</title>
+    <link rel="icon" href="imgs/player.png" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script
+      src="https://kit.fontawesome.com/d0413040b6.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="music-player">
+        <nav>
+          <div class="circle">
+            <i class="fa-solid fa-angle-left"></i>
+          </div>
+          <div class="circle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </nav>
+        <img src="media/sickomode.png" class="song-img" />
+        <h1>SICKO MODE</h1>
+        <p>Travis Scott Ft. Drake</p>
+        <audio id="song">
+          <source src="media/sickomode.mp3" type="audio/mpeg" />
+        </audio>
+        <div class="time-display-container">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+        <input type="range" value="0" id="progress" />
+        <div class="controls">
+          <div><i class="fa-solid fa-backward"></i></div>
+          <div onclick="playPause()">
+            <i class="fa-solid fa-play" id="ctrlIcon"></i>
+          </div>
+          <div><i class="fa-solid fa-forward"></i></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let progress = document.getElementById("progress");
+      let song = document.getElementById("song");
+      let ctrlIcon = document.getElementById("ctrlIcon");
+      let currentTimeDisplay = document.getElementById("currentTime");
+      let durationDisplay = document.getElementById("duration");
+      song.onloadedmetadata = function () {
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+        durationDisplay.textContent = formatTime(song.duration);
+      };
+      function playPause() {
+        if (ctrlIcon.classList.contains("fa-pause")) {
+          song.pause();
+          ctrlIcon.classList.remove("fa-pause");
+          ctrlIcon.classList.add("fa-play");
+        } else {
+          song.play();
+          ctrlIcon.classList.add("fa-pause");
+          ctrlIcon.classList.remove("fa-play");
+        }
+      }
+      if (song.play()) {
+        setInterval(() => {
+          progress.value = song.currentTime;
+          currentTimeDisplay.textContent = formatTime(song.currentTime);
+        }, 500);
+      }
+      progress.onchange = function () {
+        song.play();
+        song.currentTime = progress.value;
+        currentTimeDisplay.textContent = formatTime(progress.value);
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+      };
+      function formatTime(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+      }
+    </script>
+  </body>
+</html>
