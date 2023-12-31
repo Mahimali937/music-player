@@ -34,11 +34,11 @@
         </div>
         <input type="range" value="0" id="progress" />
         <div class="controls">
-          <div><i class="fa-solid fa-backward"></i></div>
+          <div onclick="back()"><i class="fa-solid fa-backward"></i></div>
           <div onclick="playPause()">
             <i class="fa-solid fa-play" id="ctrlIcon"></i>
           </div>
-          <div><i class="fa-solid fa-forward"></i></div>
+          <div onclick="end()"><i class="fa-solid fa-forward"></i></div>
         </div>
       </div>
     </div>
@@ -81,6 +81,15 @@
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+      }
+      function back() {
+        song.currentTime = 0;
+        song.play();
+        progress.value = song.currentTime;
+      }
+      function end() {
+        song.currentTime = song.duration;
+        progress.value = song.duration;
       }
     </script>
   </body>
